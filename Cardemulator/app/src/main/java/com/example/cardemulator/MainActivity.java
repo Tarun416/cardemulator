@@ -1,10 +1,18 @@
 package com.example.cardemulator;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import android.support.v4.app.FragmentActivity;
+
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatCallback;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -21,11 +29,12 @@ import com.example.cardemulator.logger.MessageOnlyLogFilter;
 
 import java.util.logging.Logger;
 
-public class MainActivity extends SampleActivityBase {
+public class MainActivity extends SampleActivityBase implements AppCompatCallback {
 
 
 
     public static final String TAG = "MainActivity";
+    private AppCompatDelegate delegate;
 
     // Whether the Log Fragment is currently shown
     private boolean mLogShown;
@@ -33,18 +42,29 @@ public class MainActivity extends SampleActivityBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+     //   setContentView(R.layout.activity_main);
+
+        delegate=AppCompatDelegate.create(this,this);
+
+        delegate.onCreate(savedInstanceState);
+
+        delegate.setContentView(R.layout.activity_main);
+
+        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar);
+        delegate.setSupportActionBar(toolbar);
+
+
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
 
         if (savedInstanceState == null) {
@@ -108,5 +128,21 @@ public class MainActivity extends SampleActivityBase {
         msgFilter.setNext(logFragment.getLogView());
 
         Log.i(TAG, "Ready");
+    }
+
+    @Override
+    public void onSupportActionModeStarted(ActionMode mode) {
+
+    }
+
+    @Override
+    public void onSupportActionModeFinished(ActionMode mode) {
+
+    }
+
+    @Nullable
+    @Override
+    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
+        return null;
     }
 }
